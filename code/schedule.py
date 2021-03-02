@@ -29,8 +29,8 @@ def test_f():
   m = cMotion(conf=cfg)
   
   #variable
-  name = James
-  team = sirlab
+  name = 'James'
+  team = 'sirlab'
   schedule = [1,1,1]
 
   while True:
@@ -68,12 +68,12 @@ def test_f():
 
     #<파일>i팀정보!에서 무슨 팀인지 가져오기
     with open('user.pickle','rb') as fr:
-    user_loaded = pickle.load(fr)
+        user_loaded = pickle.load(fr)
     team = user_loaded[name]
     #<파일>i일정!에서 일정 정보 가져오기
     with open('schedule.pickle','rb') as fr:
-    schedule_loaded = pickle.load(fr)
-    scheduel = schedule_loaded[team]
+        schedule_loaded = pickle.load(fr)
+    schedule = schedule_loaded[team]
 
     #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
     tObj.tts("<speak>\
@@ -87,9 +87,10 @@ def test_f():
 
     #<STT> "Yes" or "No" 인식하기
     ret = tObj.stt()
-    if('Yes' in ret || '네' in ret)
-        
-    else
+    if('Yes' in ret or '네' in ret):
+        print("going")
+
+    else:
         continue
     #print(" #<STT2> Yes or No 인식하기")
     time.sleep(1)
@@ -103,8 +104,8 @@ def test_f():
     #print("#<STT> **일 **시")
     month = 9
     date = 10
-    time = 12
-    time_schedule =[month,date,tiem]
+    t = 12
+    time_schedule =[month,date,t]
     time.sleep(1)
 
     #<LED> 음량정보,남은시간 표시
@@ -122,8 +123,8 @@ def test_f():
     #<TTS> "입력이 완료되었습니다."
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
-              </speak>"
-              \ , filename)
+              </speak>"\
+              , filename)
 
     aObj.play(filename, out='local', volume=-500)
     time.sleep(2)
