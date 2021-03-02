@@ -1,6 +1,9 @@
+# -*- coding: UTF-8 -*-
+
 import os
 import sys
 import time
+import pickle
 
 # 상위 디렉토리 추가 (for utils.config)
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
@@ -26,9 +29,9 @@ def test_f():
   m = cMotion(conf=cfg)
   
   #variable
-  name = "디폴트"
-  team = "디폴트"
-  schedule = ("디폴트", "디폴트")
+  name = James
+  team = sirlab
+  schedule = [1,1,1]
 
   while True:
     
@@ -64,8 +67,14 @@ def test_f():
     time.sleep(1)
 
     #<파일>i팀정보!에서 무슨 팀인지 가져오기
+    with open('user.pickle','rb') as fr:
+    user_loaded = pickle.load(fr)
+    team = user_loaded[name]
     #<파일>i일정!에서 일정 정보 가져오기
-    
+    with open('schedule.pickle','rb') as fr:
+    schedule_loaded = pickle.load(fr)
+    scheduel = schedule_loaded[team]
+
     #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅 있습니다. 일정을 추가할까요? </voice>\
@@ -77,35 +86,47 @@ def test_f():
 
 
     #<STT> "Yes" or "No" 인식하기
-    print(" #<STT2> Yes or No 인식하기")
+    ret = tObj.stt()
+    if('Yes' in ret || '네' in ret)
+        
+    else
+        continue
+    #print(" #<STT2> Yes or No 인식하기")
     time.sleep(1)
 
     
     #<LED> 음량정보,남은시간 표시
-    print("#<LED> 음량정보,남은시간 표시")
-    time.sleep(1)
+    #print("#<LED> 음량정보,남은시간 표시")
+    #time.sleep(1)
 
     #<STT> "**일 **시"
-    print("#<STT> **일 **시")
+    #print("#<STT> **일 **시")
+    month = 9
+    date = 10
+    time = 12
+    time_schedule =[month,date,tiem]
     time.sleep(1)
 
     #<LED> 음량정보,남은시간 표시
-    print("#<LED> 음량정보,남은시간 표시")
-    time.sleep(1)
+    #print("#<LED> 음량정보,남은시간 표시")
+    #time.sleep(1)
 
     #<파일>i일정!에 저장
-    print("#<파일>i일정!에 저장")
+    schedule_load[team] = tiem_schedule
+    with open('schedule.pickle','wb') as fw:
+        pickle.dump(scheduel_load,fw)
+
+    #print("#<파일>i일정!에 저장")
     time.sleep(1)
 
     #<TTS> "입력이 완료되었습니다."
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
-              </speak>"\
-            , filename)
+              </speak>"
+              \ , filename)
 
     aObj.play(filename, out='local', volume=-500)
     time.sleep(2)
-
     #<모션> 마지막 인사
     m.set_motion(name="byebye",cycle=1) 
     time.sleep(2)
@@ -116,4 +137,3 @@ def test_f():
 
 if __name__ == "__main__":
   test_f()
-
