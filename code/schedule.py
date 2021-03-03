@@ -82,7 +82,7 @@ def test_f():
             , filename)
 
     aObj.play(filename, out='local', volume=-500)
-    time.sleep(2)
+    time.sleep(10)
 
 
     #<STT> "Yes" or "No" 인식하기
@@ -90,8 +90,20 @@ def test_f():
     if('Yes' in ret or '네' in ret):
         print("going")
 
-    else:
+    else :
+        #<TTS> "입력이 완료되었습니다."
+        tObj.tts("<speak>\
+                <voice name='MAN_READ_CALM'> 알겠습니다!  좋은하루 되세요! </voice>\
+                  </speak>"\
+                 , filename)
+
+        aObj.play(filename, out='local', volume=-500)
+        time.sleep(2)
+        #<모션> 마지막 인사
+        m.set_motion(name="byebye",cycle=1) 
+        time.sleep(2)
         continue
+
     #print(" #<STT2> Yes or No 인식하기")
     time.sleep(1)
 
