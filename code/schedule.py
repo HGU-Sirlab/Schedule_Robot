@@ -108,99 +108,99 @@ def test_f():
 
     else # 연구원
 
-    #<TTS>"**님 안녕하세요"
-    tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'>"+name+"님 안녕하세요. </voice>\
-              </speak>"\
-            , filename)
+        #<TTS>"**님 안녕하세요"
+        tObj.tts("<speak>\
+                <voice name='MAN_READ_CALM'>"+name+"님 안녕하세요. </voice>\
+                  </speak>"\
+                , filename)
 
-    aObj.play(filename, out='local', volume=-500)
+        aObj.play(filename, out='local', volume=-500)
 
-    #<모션> 오른손 인사
-    m.set_motion(name="hello",cycle=1)
-    time.sleep(1)
+        #<모션> 오른손 인사
+        m.set_motion(name="hello",cycle=1)
+        time.sleep(1)
 
-    #<파일>i팀정보!에서 무슨 팀인지 가져오기
-    with open('user.pickle','rb') as fr:
-        user_loaded = pickle.load(fr)
-    team = user_loaded[name]
+        #<파일>i팀정보!에서 무슨 팀인지 가져오기
+        with open('user.pickle','rb') as fr:
+            user_loaded = pickle.load(fr)
+        team = user_loaded[name]
 
-    #<파일>i일정!에서 일정 정보 가져오기
-    with open('schedule.pickle','rb') as fr:
-        schedule_loaded = pickle.load(fr)
-    schedule = schedule_loaded[team]
+        #<파일>i일정!에서 일정 정보 가져오기
+        with open('schedule.pickle','rb') as fr:
+            schedule_loaded = pickle.load(fr)
+        schedule = schedule_loaded[team]
 
-    #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
-    tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅 있습니다. 일정을 추가할까요? </voice>\
-              </speak>"\
-            , filename)
+        #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
+        tObj.tts("<speak>\
+                <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅 있습니다. 일정을 추가할까요? </voice>\
+                  </speak>"\
+                , filename)
 
-    aObj.play(filename, out='local', volume=-500)
-    time.sleep(10)
+        aObj.play(filename, out='local', volume=-500)
+        time.sleep(10)
 
 
-    #<STT> "Yes" or "No" 인식하기
-    ret = tObj.stt()
-    if('Yes' in ret or '네' in ret):
-        print("going")
+        #<STT> "Yes" or "No" 인식하기
+        ret = tObj.stt()
+        if('Yes' in ret or '네' in ret):
+            print("going")
 
-    else :
+        else :
+            #<TTS> "입력이 완료되었습니다."
+            tObj.tts("<speak>\
+                    <voice name='MAN_READ_CALM'> 알겠습니다!  좋은하루 되세요! </voice>\
+                      </speak>"\
+                     , filename)
+
+            aObj.play(filename, out='local', volume=-500)
+            time.sleep(2)
+            #<모션> 마지막 인사
+            m.set_motion(name="byebye",cycle=1)
+            time.sleep(2)
+            continue
+
+        #print(" #<STT2> Yes or No 인식하기")
+        time.sleep(1)
+
+
+        #<LED> 음량정보,남은시간 표시
+        #print("#<LED> 음량정보,남은시간 표시")
+        #time.sleep(1)
+
+        #<STT> "**일 **시"
+        #print("#<STT> **일 **시")
+        month = 9
+        date = 10
+        hour = 12
+        time_schedule =[month,date,hour]
+        time.sleep(1)
+
+        #<LED> 음량정보,남은시간 표시
+        #print("#<LED> 음량정보,남은시간 표시")
+        #time.sleep(1)
+
+        #<파일>i일정!에 저장
+        schedule_load[team] = time_schedule
+        with open('schedule.pickle','wb') as fw:
+            pickle.dump(scheduel_load,fw)
+
+        #print("#<파일>i일정!에 저장")
+        time.sleep(1)
+
         #<TTS> "입력이 완료되었습니다."
         tObj.tts("<speak>\
-                <voice name='MAN_READ_CALM'> 알겠습니다!  좋은하루 되세요! </voice>\
+                <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
                   </speak>"\
-                 , filename)
+                  , filename)
 
         aObj.play(filename, out='local', volume=-500)
         time.sleep(2)
         #<모션> 마지막 인사
         m.set_motion(name="byebye",cycle=1)
         time.sleep(2)
-        continue
 
-    #print(" #<STT2> Yes or No 인식하기")
-    time.sleep(1)
-
-
-    #<LED> 음량정보,남은시간 표시
-    #print("#<LED> 음량정보,남은시간 표시")
-    #time.sleep(1)
-
-    #<STT> "**일 **시"
-    #print("#<STT> **일 **시")
-    month = 9
-    date = 10
-    hour = 12
-    time_schedule =[month,date,hour]
-    time.sleep(1)
-
-    #<LED> 음량정보,남은시간 표시
-    #print("#<LED> 음량정보,남은시간 표시")
-    #time.sleep(1)
-
-    #<파일>i일정!에 저장
-    schedule_load[team] = time_schedule
-    with open('schedule.pickle','wb') as fw:
-        pickle.dump(scheduel_load,fw)
-
-    #print("#<파일>i일정!에 저장")
-    time.sleep(1)
-
-    #<TTS> "입력이 완료되었습니다."
-    tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
-              </speak>"\
-              , filename)
-
-    aObj.play(filename, out='local', volume=-500)
-    time.sleep(2)
-    #<모션> 마지막 인사
-    m.set_motion(name="byebye",cycle=1)
-    time.sleep(2)
-
-    #반복문 다시 처음으로...
-    print("#반복문 다시 처음으로...")
+        #반복문 다시 처음으로...
+        print("#반복문 다시 처음으로...")
 
 
 if __name__ == "__main__":
