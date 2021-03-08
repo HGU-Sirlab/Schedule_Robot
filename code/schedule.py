@@ -106,7 +106,7 @@ def test_f():
                 </speak>"\
                 , filename)
 
-    else # 연구원
+    else : # 연구원
 
         #<TTS>"**님 안녕하세요"
         tObj.tts("<speak>\
