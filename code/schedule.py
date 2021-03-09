@@ -16,7 +16,7 @@ from vision.visionlib import cFace
 from speech.speechlib import cSpeech
 from audio.audiolib import cAudio
 from motion.motionlib import cMotion
-
+from speech.speechlib import cDialog
 def test_f():
   # instance
   cam = cCamera()
@@ -24,14 +24,15 @@ def test_f():
   faceObj.load_db("facedb")
   print(faceObj.get_db()[0]) #DB 업데이트 확인용  
   tObj = cSpeech(conf=cfg)
+  dObj = cDialog(conf=cfg)
   filename = cfg.TESTDATA_PATH+"/tts.mp3" #tObj 관련 파일명 변수
   aObj = cAudio()
   m = cMotion(conf=cfg)
   
   #variable
-  name = James
-  team = sirlab
-  schedule = [1,1,1]
+  name = 'James'
+  team = 'sirlab'
+  schedule = ['1','1']
 
   while True:
     
@@ -63,17 +64,18 @@ def test_f():
     aObj.play(filename, out='local', volume=-500)
     
     #<모션> 오른손 인사
-    m.set_motion(name="hello",cycle=1) 
+    #m.set_motion(name="hello",cycle=1) 
+    m.set_motion(name="cheer1",cycle=1)
     time.sleep(1)
 
     #<파일>i팀정보!에서 무슨 팀인지 가져오기
     with open('user.pickle','rb') as fr:
-    user_loaded = pickle.load(fr)
+        user_loaded = pickle.load(fr)
     team = user_loaded[name]
     #<파일>i일정!에서 일정 정보 가져오기
     with open('schedule.pickle','rb') as fr:
-    schedule_loaded = pickle.load(fr)
-    scheduel = schedule_loaded[team]
+        schedule_loaded = pickle.load(fr)
+    schedule = schedule_loaded[team]
 
     #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
     tObj.tts("<speak>\
@@ -82,29 +84,52 @@ def test_f():
             , filename)
 
     aObj.play(filename, out='local', volume=-500)
-    time.sleep(2)
+    time.sleep(5)
 
 
     #<STT> "Yes" or "No" 인식하기
     ret = tObj.stt()
-    if('Yes' in ret || '네' in ret)
-        
-    else
+    print(ret)
+    if('Yes' in ret or '네' in ret or '좋아' in ret):
+        print("ok Thank you~!")
+    else:
+        print("No??")
+        print("반복문 다시 처음으로")
+        tObj.tts("<speak>\
+                <voice name='MAN_READ_CALM'>일정이 없으시군요 감사합니다\
+                </voice></speak>", filename)
+        aObj.play(filename, out='local', volume=-500)
+        print("말씀감사합니다")
         continue
-    #print(" #<STT2> Yes or No 인식하기")
+
     time.sleep(1)
 
     
     #<LED> 음량정보,남은시간 표시
     #print("#<LED> 음량정보,남은시간 표시")
     #time.sleep(1)
-
+    #다음회의가 언제인가요?
+    print("지금 말합니다.")
+    tObj.tts("<speak>\
+            <voice name='MAN_READ_CALM'>날짜와 시간을\
+            말씀해주세요.예를 들어, 25일 17시.\
+            </voice>\
+              </speak>"\
+            , filename)
+    aObj.play(filename, out='local', volume=-500)
+    time.sleep(6)
+    
+    
     #<STT> "**일 **시"
+    ret = tObj.stt()
+    print(ret)
     #print("#<STT> **일 **시")
-    month = 9
-    date = 10
-    time = 12
-    time_schedule =[month,date,tiem]
+    data = dObj.mecab_morphs(ret)
+    time.sleep(1)
+    print(data)
+    date = data[0]
+    t = data[2] #sst 인식이 제대로 안되면 data길이가 짧아질 수 있음
+    time_schedule =[date,t]
     time.sleep(1)
 
     #<LED> 음량정보,남은시간 표시
@@ -112,9 +137,9 @@ def test_f():
     #time.sleep(1)
 
     #<파일>i일정!에 저장
-    schedule_load[team] = tiem_schedule
+    schedule_loaded[team] = time_schedule
     with open('schedule.pickle','wb') as fw:
-        pickle.dump(scheduel_load,fw)
+        pickle.dump(schedule_loaded,fw)
 
     #print("#<파일>i일정!에 저장")
     time.sleep(1)
@@ -122,8 +147,8 @@ def test_f():
     #<TTS> "입력이 완료되었습니다."
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
-              </speak>"
-              \ , filename)
+            </speak>"\
+            , filename)
 
     aObj.play(filename, out='local', volume=-500)
     time.sleep(2)
