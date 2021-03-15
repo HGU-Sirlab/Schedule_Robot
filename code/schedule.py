@@ -57,7 +57,7 @@ def test_f():
     
     #<TTS>"**님 안녕하세요"
     tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'>"+name+"님 안녕하세요. </voice>\
+            <voice name='MAN_READ_CALM'>"+name+"님 안녕하세요 </voice>\
               </speak>"\
             , filename)
 
@@ -79,25 +79,26 @@ def test_f():
 
     #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
     tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅 있습니다. 일정을 추가할까요? </voice>\
+            <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅\
+            있습니다. 일정을 추가하고싶나요오오오 </voice>\
               </speak>"\
             , filename)
 
     aObj.play(filename, out='local', volume=-500)
-    time.sleep(5)
+    time.sleep(15)
 
 
     #<STT> "Yes" or "No" 인식하기
     ret = tObj.stt()
     print(ret)
-    if('Yes' in ret or '네' in ret or '좋아' in ret):
+    if('Yes' in ret or '예' in ret or '어' in ret or  '네' in ret or '좋아' in ret):
         print("ok Thank you~!")
     else:
         print("No??")
         print("반복문 다시 처음으로")
         tObj.tts("<speak>\
                 <voice name='MAN_READ_CALM'>일정이 없으시군요 감사합니다\
-                </voice></speak>", filename)
+                <break/></voice></speak>", filename)
         aObj.play(filename, out='local', volume=-500)
         print("말씀감사합니다")
         continue
@@ -113,7 +114,7 @@ def test_f():
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'>날짜와 시간을\
             말씀해주세요.예를 들어, 25일 17시.\
-            </voice>\
+            <break/></voice>\
               </speak>"\
             , filename)
     aObj.play(filename, out='local', volume=-500)
@@ -146,7 +147,7 @@ def test_f():
 
     #<TTS> "입력이 완료되었습니다."
     tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'> 입력이 완료되었습니다. 연구시작하세요! </voice>\
+            <voice name='MAN_READ_CALM'>"+time_schedule[0]+"일"+time_schedule[1]+"시 입력이 완료되었습니다. 연구시작하세요! <break/></voice>\
             </speak>"\
             , filename)
 
