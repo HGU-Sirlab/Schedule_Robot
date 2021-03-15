@@ -57,8 +57,9 @@ def test_f():
     
     #<TTS>"**님 안녕하세요"
     tObj.tts("<speak>\
-            <voice name='MAN_READ_CALM'>"+name+"님 안녕하세요 </voice>\
-              </speak>"\
+            <voice name='MAN_READ_CALM'>\
+            "+name+"님 안녕하세요 </voice>\
+            </speak>"\
             , filename)
 
     aObj.play(filename, out='local', volume=-500)
