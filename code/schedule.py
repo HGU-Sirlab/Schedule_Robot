@@ -81,7 +81,7 @@ def test_f():
     #<TTS>"**팀 오늘 **시 미팅 있습니다. 일정을 추가할까요?"
     tObj.tts("<speak>\
             <voice name='MAN_READ_CALM'>"+team+"팀 오늘"+schedule[1]+"시 미팅\
-            있습니다. 일정을 추가하고싶나요오오오 </voice>\
+            있습니다. <break time='500ms'/>일정을 추가하고싶나요오오오 </voice>\
               </speak>"\
             , filename)
 
