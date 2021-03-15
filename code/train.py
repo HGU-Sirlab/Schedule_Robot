@@ -27,7 +27,7 @@ def test_func():
   if len(faces) < 1:
     print(" No face")
   else:
-    print(" Train:", faceObj.train_face(img, faces[0], "준희"))
+    print(" Train:", faceObj.train_face(img, faces[0], "한재"))
   print("After Train, DB:", faceObj.get_db()[0])
 
   img = cam.read()
